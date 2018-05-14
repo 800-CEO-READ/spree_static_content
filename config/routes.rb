@@ -8,8 +8,10 @@ end
 class Spree::StaticPage
   def self.matches?(request)
     slug = StaticPage::remove_spree_mount_point(request.fullpath)
-    pages = Spree::Page.arel_table
-    Spree::Page.visible.by_slug(slug).exists?
+    unless slug =~ /^system/ || slug =~ /^products/ || slug =~ /^bestseller_lists/ || slug =~ /^advanced_search/
+      pages = Spree::Page.arel_table
+      Spree::Page.visible.by_slug(slug).exists?
+    end
   end
 end
 
